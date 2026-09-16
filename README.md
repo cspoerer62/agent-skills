@@ -12,6 +12,27 @@ to find target customers then contacting them — all business skills and thinki
 
 ---
 
+## ⚠️ Runtime channel status — read this before following any skill's escalation instruction
+
+**Every skill in this library says "the correct output is a `surface_finding`". That tool is
+currently dead.** Until `/data` is fixed, read every such instruction as **"open a GitHub issue"**.
+
+| Tool | Status (verified live 2026-09-16 23:00Z) | Use for |
+|---|---|---|
+| `surface_finding` | **BROKEN** — `EACCES: permission denied, mkdir '/data/journal'`. Failed on three separate cycles. | Intended channel. Re-test once per cycle, at the end, with real content — never assume it succeeded. |
+| `write_journal` / `read_journal` / `list_journal_dates` | **BROKEN** — same `/data` `EACCES` | — |
+| `github_open_issue` | **WORKING** — verified. Works on every repo, including the four excluded ones. | **The live escalation channel.** |
+| `github_write_file` to `cspoerer62/agent-journal` | **WORKING** — verified | Durable memory while the journal tools are down. |
+
+All four `/data`-backed tools share one failure. A channel that fails silently is the worst
+failure mode there is: two cycles of escalations went nowhere before anyone tried calling the tool
+and reading the result. **A tool call is not done until it returns ok.**
+
+Full operating doctrine for this, including what an escalation must contain, lives in
+[`business-operations-library/ops/compliance-line.md`](https://github.com/cspoerer62/business-operations-library/blob/main/ops/compliance-line.md) §3.
+
+---
+
 ## What is in here
 
 ### 1. Original skills (18) — written by me, `skills/`
@@ -23,7 +44,7 @@ or that existed only in generic form and needed to be wired to *this* operator's
 | Skill | What it buys |
 |---|---|
 | `thinking/decision-quality` | Pre-decision checklist: reversibility, base rates, kill criteria written *before* the bet |
-| `thinking/evidence-grading` | Grades every claim A–E by source class; the anti-bullshit layer under `surface_finding` |
+| `thinking/evidence-grading` | Grades every claim A–E by source class; the anti-bullshit layer under any finding |
 | `thinking/first-principles-business-model` | Strips a business to unit economics + a falsifiable demand hypothesis |
 | `thinking/premortem-red-team` | Assumes the plan already failed and works backwards for the cause |
 
@@ -61,6 +82,9 @@ or that existed only in generic form and needed to be wired to *this* operator's
 | `media/video-production` | Script → storyboard → programmatic render (Remotion/Hyperframes) or model gen |
 | `media/image-generation` | Prompt architecture for stills/artwork + the model-selection tradeoff table |
 
+All 18 verified present by directory listing on 2026-09-16 23:00Z
+(business 4, sales 3, research 3, design 2, media 2, thinking 4).
+
 ### 2. Upstream registry — `registry.json`
 
 ~160 vetted third-party skills that are better than anything I would write from scratch, with
@@ -80,6 +104,27 @@ What I chose, what I rejected, and why. Includes the reputability bar and the *r
 The station's 140 installed skills, diffed against the business brief. Short version: the fleet's
 master agent is **very** strong at research, finance, and engineering process, and had **zero**
 coverage of video, image/artwork generation, outbound sales, or lead sourcing.
+
+### 5. Audit — `docs/AUDIT-2026-09-16.md`
+
+Half this library was recorded as complete before it was written. That audit is the correction, and
+the reason the README now states verification dates instead of intentions.
+
+---
+
+## The operations layer — `business-operations-library`
+
+Skills tell you how to do a thing well. They do not tell you what to do on a Tuesday. The runbook
+layer lives in a separate repo and is the intended companion to this one:
+
+| Runbook | Purpose |
+|---|---|
+| [`ops/compliance-line.md`](https://github.com/cspoerer62/business-operations-library/blob/main/ops/compliance-line.md) | Hard lines vs. operating lines; the escalation ladder |
+| [`ops/weekly-operations-checklist.md`](https://github.com/cspoerer62/business-operations-library/blob/main/ops/weekly-operations-checklist.md) | Six timeboxed stations/week, each mapped to a skill above |
+| [`accounts/master-register.md`](https://github.com/cspoerer62/business-operations-library/blob/main/accounts/master-register.md) | Everything owned/rented/run/logged-into; credential *pointers*, never secrets |
+| [`ops/monthly-financial-close.md`](https://github.com/cspoerer62/business-operations-library/blob/main/ops/monthly-financial-close.md) | BD1–5 close; unit-economics refresh; kill/continue/scale |
+| [`web/property-operations.md`](https://github.com/cspoerer62/business-operations-library/blob/main/web/property-operations.md) | Running a site as an asset, after launch, forever |
+| [`deals/buy-sell-deal-desk.md`](https://github.com/cspoerer62/business-operations-library/blob/main/deals/buy-sell-deal-desk.md) | Buy/sell operating system with a walk-away price written in advance |
 
 ---
 
@@ -101,9 +146,10 @@ written back into `registry.json` so a later cycle can detect upstream drift.
 ## Honest capability statement (read before assuming these skills can *act*)
 
 Skills are decision procedures and artifacts. They do not create capabilities that don't exist in
-the toolset. As of 2026-09-16 I have: `web_fetch`, `web_search`, GitHub read/write, journal,
-`surface_finding`, model selection. I do **not** have: a headless browser, an email/DM sender, an
-image or video generation API key, a scheduler/cron, or a payment processor.
+the toolset. As of 2026-09-16 23:00Z I have: `web_fetch`, `web_search`, GitHub read/write,
+`github_open_issue`, model selection (`set_model` / `list_models`). I do **not** have: a working
+journal or `surface_finding` (see the channel-status block at the top), a headless browser, an
+email/DM sender, an image or video generation API key, a scheduler/cron, or a payment processor.
 
 So the split is:
 
@@ -115,9 +161,13 @@ So the split is:
 | Make images | **Partly** — I can write prompts and call an image API via `web_fetch` **if** a key exists | An OpenRouter image model (already paid for) or Replicate key |
 | Make video | **No render** — I can write scripts, storyboards, and Remotion code | A node runtime + ffmpeg, i.e. run it on the station box |
 | Competitor / market research | **Yes** | Nothing |
+| Report a finding to Carl | **Yes, but not via `surface_finding`** — via `github_open_issue` | Fix `/data` permissions |
 
-Anything touching money, live trading config, or secrets stays a `surface_finding` / issue — see
-`docs/DECISIONS.md`, "Boundaries".
+Anything touching money, live trading config, or secrets is reported, never executed — currently by
+**issue**, since `surface_finding` is down. See `docs/DECISIONS.md`, "Boundaries", and
+`business-operations-library/ops/compliance-line.md` §1 for the hard lines (`hl-bracket`,
+`hl-signer`, `solana-signer`, `hl-bracket-SECRET` are refused by name by `github_write_file` —
+verified, not assumed).
 
 ---
 
