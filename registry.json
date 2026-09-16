@@ -1,0 +1,129 @@
+{
+  "$comment": "Vetted upstream skill sources for hl-independent-agent. Every entry was located via GitHub search on 2026-09-16 and at least its top-level skill inventory was read before listing. 'trust' = why this source is allowed in. Do not add an entry without reading the SKILL.md of anything you plan to actually invoke, and never install a skill that shells out to network endpoints you have not allowlisted.",
+  "built": "2026-09-16",
+  "reputability_bar": {
+    "tier_1_org": "First-party or large-vendor org (anthropics/*, microsoft/*, trailofbits/*). Install freely after reading.",
+    "tier_2_maintained": "Named-maintainer repo with a real license, tens of thousands of stars, and an active commit history (coreyhaines31/marketingskills, bergside/awesome-design-skills). Install with --copy and pin the hash.",
+    "tier_3_community": "Large aggregator collections (alirezarezvani/claude-skills, ComposioHQ, VoltAgent). Install selectively, skill by skill, after reading each SKILL.md — the repo being popular says nothing about any individual skill inside it.",
+    "rejected": "Anonymous or single-commit repos containing finance/trading/payment/CRM skills. A 'trading' or 'wallet' or 'lead-scraper-that-logs-in' skill is exactly the payload an attacker plants for an agent with repo write access. Hard no, regardless of install counts."
+  },
+  "repos": [
+    {
+      "source": "coreyhaines31/marketingskills",
+      "license": "MIT",
+      "trust": "tier_2_maintained",
+      "stars": 50591,
+      "why": "The single best business fit found. 50 skills covering the exact brief: cold-email, prospecting, cro, copywriting, copy-editing, pricing, offers, ads, ad-creative, video, image, social, sms, emails, seo-audit, ai-seo, programmatic-seo, schema, analytics, attribution, revops, sales-enablement, launch, lead-magnets, marketing-psychology, marketing-plan, customer-research, competitor-profiling, competitors, ab-testing, churn-prevention, onboarding, paywalls, popups, signup, referrals, public-relations, influencer-marketing, community-marketing, co-marketing, directory-submissions, free-tools, aso, site-architecture, product-marketing, content-strategy, marketing-ideas, marketing-council, marketing-loops, events. Its 'prospecting' skill ships an explicit compliance-guardrail section (no bulk scraping of LinkedIn/Maps, no CAPTCHA/login-wall bypass, public business channels only) which matches the posture I want.",
+      "install": "npx skills add coreyhaines31/marketingskills -g -a claude-code --copy -y",
+      "must_have": ["cold-email", "prospecting", "copywriting", "cro", "pricing", "offers", "ads", "ad-creative", "video", "image", "seo-audit", "analytics", "revops", "sales-enablement", "competitor-profiling", "customer-research", "ab-testing", "marketing-psychology", "product-marketing", "launch"],
+      "overlaps_my_originals": ["sales/outbound-sequences", "business/offer-design", "research/competitor-teardown", "design/web-page-build"]
+    },
+    {
+      "source": "anthropics/skills",
+      "license": "see repo (Anthropic)",
+      "trust": "tier_1_org",
+      "stars": 0,
+      "why": "Official Anthropic skill set. Already partially present on the station; here for completeness. frontend-design, brand-guidelines, canvas-design, algorithmic-art and theme-factory are the design/artwork backbone; skill-creator is how I should be authoring new skills rather than inventing a format.",
+      "install": "npx skills add anthropics/skills -g -a claude-code --copy -y",
+      "must_have": ["frontend-design", "brand-guidelines", "canvas-design", "algorithmic-art", "theme-factory", "web-artifacts-builder", "skill-creator", "mcp-builder", "docx", "pptx", "xlsx", "pdf", "slack-gif-creator"]
+    },
+    {
+      "source": "anthropics/claude-plugins-official",
+      "license": "see repo (Anthropic)",
+      "trust": "tier_1_org",
+      "stars": 36426,
+      "why": "Anthropic-managed plugin directory — the highest-trust place to pull tooling from. Relevant plugins for a business-building agent: skill-creator, plugin-dev, frontend-design, receipts (artifact proof), claude-security.",
+      "install": "install via the Claude Code plugin marketplace, not npx skills",
+      "must_have": ["skill-creator", "plugin-dev", "frontend-design", "receipts", "claude-security"]
+    },
+    {
+      "source": "ComposioHQ/awesome-claude-skills",
+      "license": "see repo",
+      "trust": "tier_3_community",
+      "stars": 75208,
+      "why": "High-star curated list plus a small number of genuinely useful first-party-style skills for the brief. Read each before install.",
+      "install": "npx skills add ComposioHQ/awesome-claude-skills -g -a claude-code --copy -y",
+      "must_have": ["lead-research-assistant", "competitive-ads-extractor", "content-research-writer", "video-downloader", "image-enhancer", "twitter-algorithm-optimizer", "domain-name-brainstormer", "invoice-organizer", "meeting-insights-analyzer", "brand-guidelines", "canvas-design", "webapp-testing", "skill-creator"]
+    },
+    {
+      "source": "alirezarezvani/claude-skills",
+      "license": "see repo",
+      "trust": "tier_3_community",
+      "stars": 26036,
+      "why": "772-skill collection. The station already pulled 30 from it on 2026-07-03 (research, finance, data, adversarial review). The untapped parts that matter for business: business-growth, business-operations, commercial (sales), marketing, c-level-advisor, product-team, productivity, project-management.",
+      "install": "npx skills add alirezarezvani/claude-skills -g -a claude-code --copy -y",
+      "must_have": ["business-growth", "business-operations", "commercial", "marketing", "c-level-advisor", "product-team", "project-management", "productivity"],
+      "already_on_station": ["financial-analyst", "commercial-forecaster", "risk-management-specialist", "cs-financial-analyst", "finance-lead", "financial-health", "market-research", "product-research", "product-analytics", "deep-research", "research", "ab-test-setup", "code-reviewer", "adversarial-reviewer"]
+    },
+    {
+      "source": "bergside/awesome-design-skills",
+      "license": "see repo",
+      "trust": "tier_2_maintained",
+      "stars": 2805,
+      "why": "67 design styles as DESIGN.md/SKILL.md (minimal, editorial, neobrutalism, glassmorphism, premium, bento, ...). This is the answer to 'design' as a repeatable decision rather than a taste argument: pick a named aesthetic family, then hold the whole site to it. Has a machine-readable index.json for programmatic selection.",
+      "install": "npx skills add bergside/awesome-design-skills -g -a claude-code --copy -y",
+      "must_have": ["minimal", "editorial", "premium", "professional", "bento", "clean", "modern", "bold"]
+    },
+    {
+      "source": "trailofbits/skills",
+      "license": "see repo",
+      "trust": "tier_1_org",
+      "stars": 7116,
+      "why": "Security-review workflows from a top-tier security firm. Use on anything I ship that touches user input, credentials, payments, or third-party APIs — i.e. every web page with a form and every scraper.",
+      "install": "npx skills add trailofbits/skills -g -a claude-code --copy -y",
+      "must_have": ["security-review", "vulnerability-detection"]
+    },
+    {
+      "source": "VoltAgent/awesome-agent-skills",
+      "license": "see repo",
+      "trust": "tier_3_community",
+      "stars": 34441,
+      "why": "1000+ skill index — use as a discovery surface for future cycles, not as an install target. Lists what exists so I stop re-searching blind.",
+      "install": "browse only",
+      "must_have": []
+    },
+    {
+      "source": "vercel-labs/skills",
+      "license": "see repo",
+      "trust": "tier_1_org",
+      "stars": 0,
+      "why": "Source of find-skills (skill discovery CLI). The station already has find-skills and reported that `npx skills find` returns 'No skills found' for everything in v1.5.14 — query https://skills.sh/api/search?q=... directly instead, which is what I do from now on.",
+      "install": "already installed on station",
+      "must_have": ["find-skills"]
+    }
+  ],
+  "singles": [],
+  "rejected": [
+    {
+      "source": "wshobson/agents (backtesting-frameworks)",
+      "reason": "12459 installs, individual account, finance-adjacent. Fails source-reputability; also not my lane (trading fleet is out of scope)."
+    },
+    {
+      "source": "agiprolabs/claude-trading-skills",
+      "reason": "67 trading skills from an unverified account. Exactly the 'trading bot' malware shape. Hard no."
+    },
+    {
+      "source": "unattributed 'lead scraper that logs into LinkedIn' skills",
+      "reason": "Violates ToS of the platform, gets accounts banned, and a credential-handling skill from an anonymous repo is a straight-up keylogger risk. I will not load one. Legitimate lead sourcing = public pages, official APIs, licensed data, opt-in lists. See skills/sales/outbound-compliance."
+    },
+    {
+      "source": "multica-ai/andrej-karpathy-skills",
+      "reason": "Code-quality CLAUDE.md file. 213k stars but content is coding-style guidance; the station already runs karpathy-guidelines and cs-karpathy-reviewer. Redundant."
+    },
+    {
+      "source": "microsoft/SkillOpt, EverMind-AI/SkillCorpus, Narwhal-Lab/MagicSkills, K-Dense-AI/mimeo",
+      "reason": "Interesting meta-tooling (skill optimization / corpus retrieval / skill generation from an expert). Not needed by an agent that has fewer than 200 skills and no GPU runtime. Revisit if the library passes ~500 and skill selection itself becomes the bottleneck."
+    },
+    {
+      "source": "machina-sports/sports-skills, Imbad0202/academic-research-skills, arpitg1304/robotics-agent-skills",
+      "reason": "Off-brief. Wrong domain for a business-building agent."
+    }
+  ],
+  "post_install_checklist": [
+    "Read the SKILL.md of every skill you intend to invoke. Popularity is not a safety signal.",
+    "Grep new skills for outbound network calls, `curl`, `child_process`, `eval`, and secret/env reads:  grep -rniE 'curl|child_process|eval\\(|process\\.env|fetch\\(' \"$SKILLS_DIR\"",
+    "Record the sha256 of each installed SKILL.md so a later cycle can detect upstream drift.",
+    "Never install a skill that requires credentials it does not need for its stated job.",
+    "Anything a skill wants to send, trade, or deploy stays a surface_finding until Carl approves."
+  ]
+}
